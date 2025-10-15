@@ -9,14 +9,25 @@
       font-family: "Vazir", sans-serif;
       background: linear-gradient(0deg, #000040, #000020);
       height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: white;
       margin: 0;
       overflow: hidden;
       padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .panel {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    .panel.active {
+      display: flex;
     }
 
     h2 {
@@ -110,6 +121,79 @@
       text-align: center;
     }
 
+    .login-box {
+      background-color: white;
+      padding: 30px;
+      border-radius: 30px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      width: 300px;
+      text-align: center;
+      color: #000;
+      margin-top: 20px; /* برای پایین‌تر آوردن */
+    }
+
+    .login-box input {
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 90%;
+      font-size: 14px;
+    }
+
+    .login-box input[type="submit"] {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      padding: 12px;
+    }
+
+    .forgot-password {
+      background-color: #e74c3c;
+      width: 200px;
+      margin-top: 10px;
+    }
+
+    .forgot-password:hover {
+      background-color: #c0392b;
+    }
+
+    .settings-content {
+      background: rgba(0, 0, 64, 0.8);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(42, 157, 244, 0.2);
+      width: 100%;
+      max-width: 350px;
+    }
+
+    .back-btn {
+      align-self: flex-start;
+      background-color: #ff4444;
+      width: 100px;
+    }
+
+    .back-btn:hover {
+      background-color: #cc0000;
+    }
+
+    .wifi-input, .password-input {
+      width: 100%;
+      padding: 8px;
+      margin: 10px 0;
+      border: 1px solid #2a9df4;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .checkbox-label {
+      margin: 10px 0;
+      color: #2a9df4;
+    }
+
     @media (max-width: 480px) {
       h2 {
         font-size: 20px;
@@ -125,6 +209,19 @@
         bottom: 10px;
         left: 10px;
         font-size: 12px;
+      }
+      .login-box {
+        width: 250px;
+        padding: 20px;
+        margin-top: 10px;
+      }
+      .login-box input {
+        padding: 8px;
+        font-size: 12px;
+      }
+      .settings-content {
+        padding: 15px;
+        max-width: 300px;
       }
     }
 
@@ -143,6 +240,10 @@
         bottom: 15px;
         left: 15px;
         font-size: 13px;
+      }
+      .login-box {
+        width: 280px;
+        margin-top: 15px;
       }
     }
 
@@ -166,60 +267,167 @@
   </style>
 </head>
 <body>
-  <h2>به پنل مدیریت خوش آمدید!</h2>
-  
-  <button onclick="addCard()">➕ افزودن کارت جدید</button>
-  <button onclick="openDoor()">🚪 باز کردن درب</button>
-  <button onclick="showReport()">📋 گزارش ورودی/خروجی</button>
-  <button onclick="toggleVacationMode()">🚪 حالت امنیت سفر</button>
-  <button onclick="openSettings()">⚙️ تنظیمات</button>
-  <button onclick="openProfile()">👤 پروفایل</button>
+  <div class="panel active" id="loginPanel">
+    <div class="login-box">
+      <h2>ورود به پنل مدیریت</h2>
+      <form id="loginForm">
+        <input type="text" name="username" placeholder="نام کاربری"><br>
+        <input type="password" name="password" placeholder="رمز عبور"><br>
+        <input type="submit" value="ورود">
+      </form>
+      <button class="forgot-password" onclick="forgotPassword()">رمز عبور خود را فراموش کرده‌ام</button>
+      <h2 style="font-size: 12px; color: #2a9df4; margin-top: 20px; font-weight: 400;">نام کاربری پیش‌فرض: admin</h2>
+      <h2 style="font-size: 12px; color: #2a9df4; font-weight: 400;">رمز عبور پیش‌فرض: 1234</h2>
+    </div>
+    <div class="footer">
+      Instagram: <a href="https://instagram.com/microplus_ir" style="color: #2a9df4; text-decoration: none;">microplus_ir</a> | 
+      Telegram: <a href="https://t.me/microplus_ir" style="color: #2a9df4; text-decoration: none;">microplus_ir</a> | میکروپلاس
+    </div>
+  </div>
 
-  <div class="footer">
-    Instagram: <a href="https://instagram.com/microplus_ir" style="color: #2a9df4; text-decoration: none;">microplus_ir</a> | 
-    Telegram: <a href="https://t.me/microplus_ir" style="color: #2a9df4; text-decoration: none;">microplus_ir</a> | میکروپلاس
+  <div class="panel" id="mainPanel">
+    <h2>پنل مدیریت</h2>
+    
+    <button onclick="addCard()">➕ افزودن کارت جدید</button>
+    <button onclick="removeCard()">🗑 حذف کارت</button>
+    <button onclick="openDoor()">🚪 باز کردن درب</button>
+    <button onclick="showReport()">📋 گزارش ورودی/خروجی</button>
+    <button onclick="toggleVacationMode()">🚪 حالت امنیت سفر</button>
+    <button onclick="openSettings()">⚙️ تنظیمات پروفایل</button>
+    <button onclick="logout()">🚪 خروج</button>
+
+    <div class="footer">
+      Instagram: <a href="https://instagram.com/microplus_ir" style="color: #2a9df4; text-decoration: none;">microplus_ir</a> | 
+      Telegram: <a href="https://t.me/microplus_ir" style="color: #2a9df4; text-decoration: none;">microplus_ir</a> | میکروپلاس
+    </div>
+  </div>
+
+  <div class="panel" id="settingsPanel">
+    <button class="back-btn" onclick="goBack()">🔙 بازگشت</button>
+    <div class="settings-content">
+      <h2>تنظیمات پروفایل</h2>
+      <label>اسم وای‌فای (ESP):</label>
+      <input type="text" class="wifi-input" value="DOOR" id="wifiName"><br>
+      <label>رمز وای‌فای:</label>
+      <input type="password" class="password-input" value="" id="wifiPassword"><br>
+      <label class="checkbox-label">
+        <input type="checkbox" id="hideWifi"> مخفی کردن وای‌فای
+      </label><br>
+      <label>تغییر رمز:</label>
+      <input type="password" class="password-input" placeholder="رمز قدیمی" id="oldPassword"><br>
+      <input type="password" class="password-input" placeholder="رمز جدید" id="newPassword"><br>
+      <input type="password" class="password-input" placeholder="تأیید رمز جدید" id="confirmPassword"><br>
+      <button onclick="saveSettings()">ذخیره تغییرات</button>
+    </div>
   </div>
 
   <script>
     let vacationMode = false;
+    let isLoggedIn = false;
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = e.target.username.value;
+      const password = e.target.password.value;
+      if (username === 'admin' && password === '1234') {
+        isLoggedIn = true;
+        document.getElementById('loginPanel').classList.remove('active');
+        document.getElementById('mainPanel').classList.add('active');
+      } else {
+        alert('نام کاربری یا رمز عبور اشتباه است!');
+      }
+    });
+
+    function forgotPassword() {
+      if (confirm('آیا مطمئن هستید که رمز به پیش‌فرض کارخانه (1234) تغییر کند؟')) {
+        alert('رمز به 1234 تغییر کرد. لطفاً دوباره وارد شوید.');
+        // اینجا می‌تونی کد ریست واقعی رو اضافه کنی
+      }
+    }
 
     function addCard() {
       const cardName = prompt('برای کارت یه اسم وارد کن:');
-      if (cardName) {
+      if (cardName && isLoggedIn) {
         alert('کارت خود را جلوی کارتخوان قرار دهید.');
-        // اینجا می‌تونی کد اتصال به RF_ID رو اضافه کنی
+      } else if (!isLoggedIn) {
+        alert('لطفاً ابتدا وارد شوید!');
+      }
+    }
+
+    function removeCard() {
+      if (isLoggedIn) {
+        alert('کارت را جلوی کارتخوان قرار دهید.');
+      } else {
+        alert('لطفاً ابتدا وارد شوید!');
       }
     }
 
     function openDoor() {
-      if (!vacationMode) {
+      if (!vacationMode && isLoggedIn) {
         fetch('/unlock', { method: 'POST' })
           .then(() => alert('✅ درب باز شد!'))
           .catch(() => alert('❌ خطا در اتصال'));
+      } else if (!isLoggedIn) {
+        alert('لطفاً ابتدا وارد شوید!');
       } else {
         alert('⚠️ حالت امنیت سفر فعاله، فقط صاحب‌خانه می‌تونه در رو باز کنه!');
       }
     }
 
     function showReport() {
-      alert('📅 گزارش آخرین ورودی: در 08:00 PM توسط کارت "مهمان" باز شد.');
+      if (isLoggedIn) {
+        alert('📅 گزارش آخرین ورودی: در 08:00 PM توسط کارت "مهمان" باز شد.');
+      } else {
+        alert('لطفاً ابتدا وارد شوید!');
+      }
     }
 
     function toggleVacationMode() {
-      vacationMode = !vacationMode;
-      if (vacationMode) {
-        alert('🎒 حالت امنیت سفر فعال شد! فقط صاحب‌خانه دسترسی داره.');
+      if (isLoggedIn) {
+        vacationMode = !vacationMode;
+        if (vacationMode) {
+          alert('🎒 حالت امنیت سفر فعال شد! فقط صاحب‌خانه دسترسی داره.');
+        } else {
+          alert('🏡 حالت امنیت سفر غیرفعال شد.');
+        }
       } else {
-        alert('🏡 حالت امنیت سفر غیرفعال شد.');
+        alert('لطفاً ابتدا وارد شوید!');
       }
     }
 
     function openSettings() {
-      alert('⚙️ صفحه تنظیمات در حال توسعه است!');
+      if (isLoggedIn) {
+        document.getElementById('mainPanel').classList.remove('active');
+        document.getElementById('settingsPanel').classList.add('active');
+      } else {
+        alert('لطفاً ابتدا وارد شوید!');
+      }
     }
 
-    function openProfile() {
-      alert('👤 صفحه پروفایل در حال توسعه است!');
+    function goBack() {
+      document.getElementById('settingsPanel').classList.remove('active');
+      document.getElementById('mainPanel').classList.add('active');
+    }
+
+    function logout() {
+      isLoggedIn = false;
+      document.getElementById('mainPanel').classList.remove('active');
+      document.getElementById('loginPanel').classList.add('active');
+    }
+
+    function saveSettings() {
+      const wifiName = document.getElementById('wifiName').value;
+      const wifiPassword = document.getElementById('wifiPassword').value;
+      const hideWifi = document.getElementById('hideWifi').checked;
+      const oldPassword = document.getElementById('oldPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (oldPassword === '1234' && newPassword === confirmPassword && newPassword) {
+        alert(`تنظیمات ذخیره شد!\nاسم وای‌فای: ${wifiName}\nرمز وای‌فای: ${wifiPassword}\nمخفی: ${hideWifi ? 'بله' : 'خیر'}\nرمز جدید: ${newPassword}`);
+      } else {
+        alert('رمز قدیمی اشتباه است یا رمزهای جدید مطابقت ندارند!');
+      }
     }
   </script>
 </body>
