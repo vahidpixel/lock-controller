@@ -42,7 +42,6 @@
       margin: 10px 0;
       border: none;
       border-radius: 25px;
-      background-color: #2a9df4;
       color: white;
       font-size: 16px;
       cursor: pointer;
@@ -52,9 +51,72 @@
     }
 
     button:hover {
-      background-color: #1f7ad8;
       transform: translateY(-2px);
       box-shadow: 0 6px 12px rgba(42, 157, 244, 0.4);
+    }
+
+    .add-card-btn {
+      background-color: #00cc66; /* سبز هماهنگ با تم */
+    }
+
+    .add-card-btn:hover {
+      background-color: #00b359;
+    }
+
+    .remove-card-btn {
+      background-color: #ff4444; /* قرمز هماهنگ با تم */
+    }
+
+    .remove-card-btn:hover {
+      background-color: #cc0000;
+    }
+
+    .open-door-btn {
+      background-color: #2a9df4;
+    }
+
+    .open-door-btn:hover {
+      background-color: #1f7ad8;
+    }
+
+    .report-btn {
+      background-color: #2a9df4;
+    }
+
+    .report-btn:hover {
+      background-color: #1f7ad8;
+    }
+
+    .vacation-mode-btn {
+      background-color: #2a9df4;
+    }
+
+    .vacation-mode-btn:hover {
+      background-color: #1f7ad8;
+    }
+
+    .settings-btn {
+      background-color: #2a9df4;
+    }
+
+    .settings-btn:hover {
+      background-color: #1f7ad8;
+    }
+
+    .logout-btn {
+      background-color: #ff4444; /* قرمز برای خروج */
+    }
+
+    .logout-btn:hover {
+      background-color: #cc0000;
+    }
+
+    .save-btn {
+      background-color: #00cc66; /* سبز برای دکمه ذخیره */
+    }
+
+    .save-btn:hover {
+      background-color: #00b359;
     }
 
     .toggle-switch {
@@ -114,11 +176,20 @@
     .footer {
       position: absolute;
       bottom: 20px;
-      left: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
       font-size: 14px;
       font-weight: 300;
       color: #2a9df4;
-      text-align: center;
+    }
+
+    .footer-left {
+      text-align: left;
+    }
+
+    .footer-right {
+      text-align: right;
     }
 
     .login-box {
@@ -126,10 +197,11 @@
       padding: 30px;
       border-radius: 30px;
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-      width: 300px;
+      width: 100%;
+      max-width: 300px;
       text-align: center;
       color: #000;
-      margin-top: 20px; /* برای پایین‌تر آوردن */
+      margin-top: 20px;
     }
 
     .login-box input {
@@ -137,8 +209,9 @@
       margin: 10px 0;
       border: 1px solid #ccc;
       border-radius: 5px;
-      width: 90%;
+      width: 85%; /* کاهش عرض برای جا گرفتن تو کادر */
       font-size: 14px;
+      box-sizing: border-box; /* شامل پدینگ و بورد در عرض */
     }
 
     .login-box input[type="submit"] {
@@ -148,6 +221,7 @@
       cursor: pointer;
       font-weight: bold;
       padding: 12px;
+      width: 90%;
     }
 
     .forgot-password {
@@ -161,12 +235,14 @@
     }
 
     .settings-content {
-      background: rgba(0, 0, 64, 0.8);
-      padding: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px; /* کاهش پدینگ برای گوشی */
       border-radius: 15px;
       box-shadow: 0 0 10px rgba(42, 157, 244, 0.2);
       width: 100%;
       max-width: 350px;
+      color: #000;
+      box-sizing: border-box; /* اطمینان از جا گرفتن محتوا */
     }
 
     .back-btn {
@@ -182,11 +258,12 @@
     .wifi-input, .password-input {
       width: 100%;
       padding: 8px;
-      margin: 10px 0;
+      margin: 8px 0; /* کاهش مارجین برای جا گرفتن */
       border: 1px solid #2a9df4;
       border-radius: 5px;
       background: rgba(255, 255, 255, 0.1);
-      color: white;
+      color: #000;
+      box-sizing: border-box; /* شامل پدینگ در عرض */
     }
 
     .checkbox-label {
@@ -199,6 +276,10 @@
         font-size: 20px;
         margin-bottom: 15px;
       }
+      #mainPanel h2 { /* فقط برای صفحه پنل مدیریت */
+        font-size: 24px; /* کمی بزرگ‌تر */
+        color: #ffffff; /* سفید */
+      }
       button {
         width: 160px;
         padding: 10px;
@@ -207,21 +288,40 @@
       }
       .footer {
         bottom: 10px;
-        left: 10px;
+        flex-direction: column;
+        text-align: center;
         font-size: 12px;
       }
+      .footer-left {
+        margin-bottom: 5px;
+      }
+      .footer-left a {
+        font-size: 12px; /* کوچک‌تر کردن لینک‌ها */
+      }
+      .footer-right {
+        margin-top: 5px;
+      }
+      .footer-right {
+        font-size: 12px;
+        white-space: nowrap; /* جلوگیری از شکستن خط */
+      }
       .login-box {
-        width: 250px;
-        padding: 20px;
+        width: 90%; /* انعطاف‌پذیر برای گوشی */
+        padding: 15px;
         margin-top: 10px;
       }
       .login-box input {
         padding: 8px;
         font-size: 12px;
+        width: 90%;
       }
       .settings-content {
-        padding: 15px;
-        max-width: 300px;
+        padding: 10px; /* کاهش بیشتر پدینگ */
+        max-width: 90%; /* انعطاف‌پذیر برای گوشی */
+      }
+      .wifi-input, .password-input {
+        margin: 5px 0; /* کاهش مارجین */
+        font-size: 12px;
       }
     }
 
@@ -229,6 +329,10 @@
       h2 {
         font-size: 24px;
         margin-bottom: 25px;
+      }
+      #mainPanel h2 { /* فقط برای صفحه پنل مدیریت */
+        font-size: 26px; /* کمی بزرگ‌تر */
+        color: #ffffff; /* سفید */
       }
       button {
         width: 180px;
@@ -238,8 +342,6 @@
       }
       .footer {
         bottom: 15px;
-        left: 15px;
-        font-size: 13px;
       }
       .login-box {
         width: 280px;
@@ -252,6 +354,10 @@
         font-size: 26px;
         margin-bottom: 30px;
       }
+      #mainPanel h2 { /* فقط برای صفحه پنل مدیریت */
+        font-size: 28px; /* کمی بزرگ‌تر */
+        color: #ffffff; /* سفید */
+      }
       button {
         width: 200px;
         padding: 12px;
@@ -260,8 +366,6 @@
       }
       .footer {
         bottom: 20px;
-        left: 20px;
-        font-size: 14px;
       }
     }
   </style>
@@ -275,30 +379,40 @@
         <input type="password" name="password" placeholder="رمز عبور"><br>
         <input type="submit" value="ورود">
       </form>
-      <button class="forgot-password" onclick="forgotPassword()">رمز عبور خود را فراموش کرده‌ام</button>
+      <button class="forgot-password" onclick="forgotPassword()">بازیابی رمز عبور</button>
       <h2 style="font-size: 12px; color: #2a9df4; margin-top: 20px; font-weight: 400;">نام کاربری پیش‌فرض: admin</h2>
       <h2 style="font-size: 12px; color: #2a9df4; font-weight: 400;">رمز عبور پیش‌فرض: 1234</h2>
     </div>
     <div class="footer">
-      Instagram: <a href="https://instagram.com/microplus_ir" style="color: #2a9df4; text-decoration: none;">microplus_ir</a> | 
-      Telegram: <a href="https://t.me/microplus_ir" style="color: #2a9df4; text-decoration: none;">microplus_ir</a> | میکروپلاس
+      <div class="footer-left">
+        Instagram: <a href="https://instagram.com/microplus_ir" style="color: #2a9df4; text-decoration: none;">Insta</a> | 
+        Telegram: <a href="https://t.me/microplus_ir" style="color: #2a9df4; text-decoration: none;">Tele</a> | میکروپلاس
+      </div>
+      <div class="footer-right">
+        ورژن: V1.1.1 / V1.0.0 / V1.2.0
+      </div>
     </div>
   </div>
 
   <div class="panel" id="mainPanel">
-    <h2>پنل مدیریت</h2>
+    <h2>پنل مدیریت</h2> <!-- خط 283 -->
     
-    <button onclick="addCard()">➕ افزودن کارت جدید</button>
-    <button onclick="removeCard()">🗑 حذف کارت</button>
-    <button onclick="openDoor()">🚪 باز کردن درب</button>
-    <button onclick="showReport()">📋 گزارش ورودی/خروجی</button>
-    <button onclick="toggleVacationMode()">🚪 حالت امنیت سفر</button>
-    <button onclick="openSettings()">⚙️ تنظیمات پروفایل</button>
-    <button onclick="logout()">🚪 خروج</button>
+    <button class="add-card-btn" onclick="addCard()">➕ افزودن کارت جدید</button>
+    <button class="remove-card-btn" onclick="removeCard()">🗑️ حذف کارت</button>
+    <button class="open-door-btn" onclick="openDoor()">🚪 باز کردن درب</button>
+    <button class="report-btn" onclick="showReport()">📊 گزارش ورودی/خروجی</button>
+    <button class="vacation-mode-btn" onclick="toggleVacationMode()">🛡️ حالت امنیت سفر</button>
+    <button class="settings-btn" onclick="openSettings()">⚙️ تنظیمات پروفایل</button>
+    <button class="logout-btn" onclick="logout()">🚫 خروج</button>
 
     <div class="footer">
-      Instagram: <a href="https://instagram.com/microplus_ir" style="color: #2a9df4; text-decoration: none;">microplus_ir</a> | 
-      Telegram: <a href="https://t.me/microplus_ir" style="color: #2a9df4; text-decoration: none;">microplus_ir</a> | میکروپلاس
+      <div class="footer-left">
+        Instagram: <a href="https://instagram.com/microplus_ir" style="color: #2a9df4; text-decoration: none;">Insta</a> | 
+        Telegram: <a href="https://t.me/microplus_ir" style="color: #2a9df4; text-decoration: none;">Tele</a> | میکروپلاس
+      </div>
+      <div class="footer-right">
+        ورژن: V1.1.1 / V1.0.0 / V1.2.0
+      </div>
     </div>
   </div>
 
@@ -317,7 +431,16 @@
       <input type="password" class="password-input" placeholder="رمز قدیمی" id="oldPassword"><br>
       <input type="password" class="password-input" placeholder="رمز جدید" id="newPassword"><br>
       <input type="password" class="password-input" placeholder="تأیید رمز جدید" id="confirmPassword"><br>
-      <button onclick="saveSettings()">ذخیره تغییرات</button>
+      <button class="save-btn" onclick="saveSettings()">ذخیره تغییرات</button>
+    </div>
+    <div class="footer">
+      <div class="footer-left">
+        Instagram: <a href="https://instagram.com/microplus_ir" style="color: #2a9df4; text-decoration: none;">Insta</a> | 
+        Telegram: <a href="https://t.me/microplus_ir" style="color: #2a9df4; text-decoration: none;">Tele</a> | میکروپلاس
+      </div>
+      <div class="footer-right">
+        ورژن: V1.1.1 / V1.0.0 / V1.2.0
+      </div>
     </div>
   </div>
 
@@ -339,10 +462,7 @@
     });
 
     function forgotPassword() {
-      if (confirm('آیا مطمئن هستید که رمز به پیش‌فرض کارخانه (1234) تغییر کند؟')) {
-        alert('رمز به 1234 تغییر کرد. لطفاً دوباره وارد شوید.');
-        // اینجا می‌تونی کد ریست واقعی رو اضافه کنی
-      }
+      alert('دکمه روی سخت‌افزار فیزیکی خود را به مدت 10 ثانیه نگه دارید.');
     }
 
     function addCard() {
@@ -423,11 +543,21 @@
       const newPassword = document.getElementById('newPassword').value;
       const confirmPassword = document.getElementById('confirmPassword').value;
 
-      if (oldPassword === '1234' && newPassword === confirmPassword && newPassword) {
-        alert(`تنظیمات ذخیره شد!\nاسم وای‌فای: ${wifiName}\nرمز وای‌فای: ${wifiPassword}\nمخفی: ${hideWifi ? 'بله' : 'خیر'}\nرمز جدید: ${newPassword}`);
-      } else {
-        alert('رمز قدیمی اشتباه است یا رمزهای جدید مطابقت ندارند!');
+      let message = '';
+      if (wifiName || wifiPassword || hideWifi) {
+        message += `تنظیمات وای‌فای ذخیره شد!\nاسم وای‌فای: ${wifiName}\nرمز وای‌فای: ${wifiPassword}\nمخفی: ${hideWifi ? 'بله' : 'خیر'}`;
       }
+
+      if (newPassword || confirmPassword || oldPassword) {
+        if (oldPassword === '1234' && newPassword === confirmPassword && newPassword) {
+          message += `\nرمز جدید: ${newPassword}`;
+        } else {
+          alert('رمز قدیمی اشتباه است یا رمزهای جدید مطابقت ندارند!');
+          return;
+        }
+      }
+
+      if (message) alert(message);
     }
   </script>
 </body>
