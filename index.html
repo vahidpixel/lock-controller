@@ -1,177 +1,226 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>قفل نگار هوشمند</title>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { height: 100vh; background: radial-gradient(circle at top left, #1a1a2e, #16213e); font-family: "Vazir", -apple-system, BlinkMacSystemFont, sans-serif; display: flex; justify-content: center; align-items: center; overflow: hidden; direction: rtl; padding: 10px; }
-.grid-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(90deg, rgba(0, 255, 255, 0.05) 0, rgba(0, 255, 255, 0.05) 1px, transparent 1px, transparent 50px), repeating-linear-gradient(0deg, rgba(0, 255, 255, 0.05) 0, rgba(0, 255, 255, 0.05) 1px, transparent 1px, transparent 50px); animation: moveGrid 20s linear infinite; z-index: 0; }
-@keyframes moveGrid { from { transform: translate(0,0); } to { transform: translate(50px,50px); } }
-.home-container { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); position: relative; z-index: 1; width: 100%; max-width: 400px; min-height: 400px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-.menu-btn { position: absolute; top: 15px; right: 15px; color: #00ffff; cursor: pointer; font-size: 1.5em; z-index: 3; padding: 10px; }
-.sidebar { position: fixed; right: -280px; width: 280px; height: 100%; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(10px); color: #fff; padding: 20px; transition: right 0.3s ease; z-index: 1000; overflow-y: auto; }
-.sidebar.active { right: 0; }
-@media (max-width: 480px) { .sidebar { width: 100%; right: -100%; } }
-.overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 999; }
-.overlay.active { display: block; }
-.menu-item { margin: 20px 0; padding: 15px; cursor: pointer; transition: all 0.3s; border-radius: 10px; font-size: 1.1em; }
-.menu-item:hover { background: rgba(0, 255, 255, 0.1); color: #00ffff; transform: translateX(-5px); }
-.action-btn { border: none; background: linear-gradient(135deg, #ff00ff, #00ffff); padding: 20px; border-radius: 50%; cursor: pointer; transition: transform 0.3s; margin: 20px 0; box-shadow: 0 0 20px rgba(0, 255, 255, 0.3); }
-.action-btn:hover { transform: scale(1.1); box-shadow: 0 0 30px rgba(0, 255, 255, 0.5); }
-.lock-img { width: 60px; height: 60px; filter: drop-shadow(0 0 5px #00ffff); transition: all 0.4s ease; }
-.unlocked { transform: rotate(90deg) scale(1.2); filter: drop-shadow(0 0 15px lime); }
-.card-list { margin-top: 20px; color: #fff; width: 100%; max-height: 200px; overflow-y: auto; }
-.card-item { background: linear-gradient(90deg, rgba(0,255,255,0.15), rgba(255,0,255,0.15)); border-radius: 10px; padding: 15px; margin: 10px 0; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; min-height: 50px; }
-.card-item:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,255,255,0.2); }
-.card-text { flex: 1; text-align: right; }
-.remove-btn { background: #ff3b3b; border: none; padding: 8px 12px; border-radius: 6px; color: #fff; cursor: pointer; transition: background 0.3s; font-size: 0.9em; }
-.remove-btn:hover { background: #ff6666; }
-.add-btn { position: fixed; bottom: 20px; right: 20px; background: linear-gradient(135deg, #00ffcc, #0066ff); border: none; border-radius: 50%; color: #fff; font-size: 1.8em; width: 60px; height: 60px; cursor: pointer; box-shadow: 0 0 20px rgba(0,255,255,0.5); transition: transform 0.3s; }
-.add-btn:hover { transform: scale(1.2); box-shadow: 0 0 30px rgba(0,255,255,0.7); }
-.scan-effect { position: absolute; top: 0; left: 0; height: 3px; width: 100%; background: linear-gradient(90deg, transparent, #00ffcc, transparent); animation: scan 2s linear infinite; opacity: 0; z-index: 2; }
-@keyframes scan { 0% { top: 0; opacity: 0; } 30% { opacity: 1; } 50% { top: 100%; opacity: 1; } 100% { top: 0; opacity: 0; } }
-.toggle-switch { position: relative; display: inline-block; width: 60px; height: 34px; margin: 20px 0; }
-.toggle-switch input { opacity: 0; width: 0; height: 0; }
-.slider { position: absolute; cursor: pointer; top: 0; right: 0; left: 0; bottom: 0; background-color: #ccc; transition: 0.4s; border-radius: 34px; }
-.slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: 0.4s; border-radius: 50%; }
-input:checked + .slider { background-color: #00ffcc; }
-input:checked + .slider:before { transform: translateX(26px); }
-.slider.round { border-radius: 34px; }
-input:checked + .slider.round:before { transform: translateX(26px); }
-.contact { position: fixed; bottom: 10px; left: 10px; color: #00ffff; font-size: 0.9em; text-align: center; }
-.contact a { color: #00ffff; margin: 0 10px; text-decoration: none; }
-.contact a:hover { color: #00ffcc; }
-.contact .logo { width: 20px; height: 20px; vertical-align: middle; }
-@media (max-width: 480px) { body { padding: 5px; } .home-container { padding: 15px; margin: 10px; min-height: 350px; } .action-btn { padding: 15px; } .lock-img { width: 50px; height: 50px; } .menu-item { margin: 15px 0; padding: 12px; font-size: 1em; } .add-btn { width: 55px; height: 55px; font-size: 1.5em; bottom: 15px; right: 15px; } }
-@supports(padding: max(0px)) { body { padding-bottom: env(safe-area-inset-bottom); padding-top: env(safe-area-inset-top); } .add-btn { bottom: max(20px, env(safe-area-inset-bottom)); right: max(20px, env(safe-area-inset-right)); } }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پنل مدیریت</title>
+  <style>
+    body {
+      font-family: "Vazir", sans-serif;
+      background: linear-gradient(0deg, #000040, #000020);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      margin: 0;
+      overflow: hidden;
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 26px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    button {
+      width: 200px;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 25px;
+      background-color: #2a9df4;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(42, 157, 244, 0.3);
+      outline: none;
+    }
+
+    button:hover {
+      background-color: #1f7ad8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(42, 157, 244, 0.4);
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+      margin: 20px 0;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #2a9df4;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    input:checked + .slider.round:before {
+      transform: translateX(26px);
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-size: 14px;
+      font-weight: 300;
+      color: #2a9df4;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+      }
+      button {
+        width: 160px;
+        padding: 10px;
+        font-size: 14px;
+        margin: 6px 0;
+      }
+      .footer {
+        bottom: 10px;
+        left: 10px;
+        font-size: 12px;
+      }
+    }
+
+    @media (min-width: 481px) and (max-width: 768px) {
+      h2 {
+        font-size: 24px;
+        margin-bottom: 25px;
+      }
+      button {
+        width: 180px;
+        padding: 12px;
+        font-size: 15px;
+        margin: 8px 0;
+      }
+      .footer {
+        bottom: 15px;
+        left: 15px;
+        font-size: 13px;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      h2 {
+        font-size: 26px;
+        margin-bottom: 30px;
+      }
+      button {
+        width: 200px;
+        padding: 12px;
+        font-size: 16px;
+        margin: 10px 0;
+      }
+      .footer {
+        bottom: 20px;
+        left: 20px;
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="grid-bg"></div>
-<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+  <h2>به پنل مدیریت خوش آمدید!</h2>
+  
+  <button onclick="addCard()">➕ افزودن کارت جدید</button>
+  <button onclick="openDoor()">🚪 باز کردن درب</button>
+  <button onclick="showReport()">📋 گزارش ورودی/خروجی</button>
+  <button onclick="toggleVacationMode()">🚪 حالت امنیت سفر</button>
+  <button onclick="openSettings()">⚙️ تنظیمات</button>
+  <button onclick="openProfile()">👤 پروفایل</button>
 
-<div class="sidebar" id="sidebar">
-  <div class="menu-item" onclick="toggleLock()">🔓 باز کردن درب</div>
-  <div class="menu-item" onclick="addCard()">➕ اضافه کردن کارت</div>
-  <div class="menu-item" onclick="showReport()">📋 گزارش آخرین ورودی</div>
-  <div class="menu-item" onclick="openSettings()">⚙️ تنظیمات</div>
-  <div class="menu-item" onclick="toggleSidebar()" style="background: rgba(255,0,0,0.2);">❌ بستن</div>
-  <label class="menu-item toggle-switch">
-    <input type="checkbox" id="vacationMode" onchange="toggleVacationMode()">
-    <span class="slider round"></span>
-    <span style="margin-right: 10px;">حالت امنیت سفر</span>
-  </label>
-</div>
-
-<div class="home-container">
-  <span class="menu-btn" onclick="toggleSidebar()">☰</span>
-  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-    <button class="action-btn" onclick="toggleLock()">
-      <img src="https://img.icons8.com/ios-filled/50/ffffff/lock.png" alt="Lock" class="lock-img" id="lockImg">
-    </button>
-    <div style="margin-top: 20px; color: #00ffff; font-size: 1.2em;">
-      کنترل درب هوشمند
-    </div>
+  <div class="footer">
+    Instagram: <a href="https://instagram.com/microplus_ir" style="color: #2a9df4; text-decoration: none;">microplus_ir</a> | 
+    Telegram: <a href="https://t.me/microplus_ir" style="color: #2a9df4; text-decoration: none;">microplus_ir</a> | میکروپلاس
   </div>
-  <div class="card-list" id="cardList"></div>
-  <div class="scan-effect" id="scanEffect"></div>
-</div>
 
-<button class="add-btn" onclick="addCard()">+</button>
+  <script>
+    let vacationMode = false;
 
-<div class="contact">
-  <span>ارتباط با سازنده: </span>
-  <a href="https://instagram.com/miicroplus" target="_blank"><img src="https://img.icons8.com/ios-filled/20/00ffff/instagram-new.png" alt="Instagram" class="logo"></a>
-  <a href="https://t.me/Mohammad_cls_a" target="_blank"><img src="https://img.icons8.com/ios-filled/20/00ffff/telegram.png" alt="Telegram" class="logo"></a>
-  <span> میکروپلاس</span>
-</div>
-
-<script>
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('active');
-  document.getElementById('overlay').classList.toggle('active');
-}
-
-let isLocked = true;
-let cardCounter = 1;
-let vacationMode = false;
-
-function toggleLock() {
-  if (!vacationMode) {
-    isLocked = !isLocked;
-    const lockImg = document.getElementById('lockImg');
-    lockImg.classList.toggle('unlocked');
-    const scan = document.getElementById('scanEffect');
-    scan.style.opacity = 1;
-    setTimeout(() => scan.style.opacity = 0, 2000);
-    if (!isLocked) {
-      fetch('/unlock', { method: 'POST' })
-        .then(() => alert('✅ درب باز شد!'))
-        .catch(() => alert('❌ خطا در اتصال'));
-    } else {
-      alert('🔒 درب قفل شد');
+    function addCard() {
+      const cardName = prompt('برای کارت یه اسم وارد کن:');
+      if (cardName) {
+        alert('کارت خود را جلوی کارتخوان قرار دهید.');
+        // اینجا می‌تونی کد اتصال به RF_ID رو اضافه کنی
+      }
     }
-    toggleSidebar();
-  } else {
-    alert('⚠️ حالت امنیت سفر فعاله، فقط صاحب‌خانه می‌تونه در رو باز کنه!');
-  }
-}
 
-function removeCard(btn) {
-  const card = btn.parentElement;
-  card.style.transform = 'scale(0)';
-  setTimeout(() => card.remove(), 300);
-}
+    function openDoor() {
+      if (!vacationMode) {
+        fetch('/unlock', { method: 'POST' })
+          .then(() => alert('✅ درب باز شد!'))
+          .catch(() => alert('❌ خطا در اتصال'));
+      } else {
+        alert('⚠️ حالت امنیت سفر فعاله، فقط صاحب‌خانه می‌تونه در رو باز کنه!');
+      }
+    }
 
-function addCard() {
-  const cardName = prompt('برای کارت یه اسم وارد کن:');
-  if (cardName) {
-    const cardList = document.getElementById('cardList');
-    const newCard = document.createElement('div');
-    newCard.className = 'card-item';
-    newCard.innerHTML = `
-      <span class="card-text">${cardName}</span>
-      <button class="remove-btn" onclick="removeCard(this)">حذف</button>
-    `;
-    cardList.appendChild(newCard);
-    const scan = document.getElementById('scanEffect');
-    scan.style.opacity = 1;
-    setTimeout(() => scan.style.opacity = 0, 2000);
-    cardList.scrollTop = cardList.scrollHeight;
-    toggleSidebar();
-  }
-}
+    function showReport() {
+      alert('📅 گزارش آخرین ورودی: در 08:00 PM توسط کارت "مهمان" باز شد.');
+    }
 
-function toggleVacationMode() {
-  vacationMode = document.getElementById('vacationMode').checked;
-  if (vacationMode) {
-    alert('🎒 حالت امنیت سفر فعال شد! فقط صاحب‌خانه دسترسی داره.');
-  } else {
-    alert('🏡 حالت امنیت سفر غیرفعال شد.');
-  }
-}
+    function toggleVacationMode() {
+      vacationMode = !vacationMode;
+      if (vacationMode) {
+        alert('🎒 حالت امنیت سفر فعال شد! فقط صاحب‌خانه دسترسی داره.');
+      } else {
+        alert('🏡 حالت امنیت سفر غیرفعال شد.');
+      }
+    }
 
-function showReport() {
-  alert('📅 گزارش آخرین ورودی: در 10:20 PM توسط کارت "مهمان" باز شد.');
-  toggleSidebar();
-}
+    function openSettings() {
+      alert('⚙️ صفحه تنظیمات در حال توسعه است!');
+    }
 
-function openSettings() {
-  alert('⚙️ صفحه تنظیمات در حال توسعه است!');
-  toggleSidebar();
-}
-
-document.addEventListener('click', function(e) {
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('overlay');
-  if (!sidebar.contains(e.target) && !e.target.classList.contains('menu-btn')) {
-    sidebar.classList.remove('active');
-    overlay.classList.remove('active');
-  }
-});
-</script>
+    function openProfile() {
+      alert('👤 صفحه پروفایل در حال توسعه است!');
+    }
+  </script>
 </body>
 </html>
-
